@@ -45,6 +45,7 @@ $(document).ready(function(){
   }
 
   var submitLookup = function(m_id) {
+    dataReset()
     formReset()
     $.ajax({
       url: url_target + '/api/manuscript/' + m_id,
@@ -140,6 +141,38 @@ $(document).ready(function(){
     $('#kmw-fields select').find("option[value='0']").attr("selected","selected");
   }
 
+    var formUpdate = function(data) {
+    formReset();
+
+    $('#kmw-fields input').each(function(){
+      // get key from id
+      element_name = $(this).attr("id").substr(8)
+
+      for (var i = 0; i < $.kmw.length; i++) {
+        if ($["kmw"][i]["element"] == element_name) {
+          $(this).val($["kmw"][i]["v"])
+        }
+      };
+    })
+
+    $('#kmw-fields select').each(function(){
+      // get key from id
+      element_name = $(this).attr("id").substr(8)
+
+      for (var i = 0; i < $.kmw.length; i++) {
+        if ($["kmw"][i]["element"] == element_name) {
+          $(this).val($["kmw"][i]["v"])
+        }
+      };
+    })
+  }
+
+  var dataReset = function() {
+    for (var i = 0; i < $.kmw.length; i++) {
+      $["kmw"][i]["v"] = ''
+    };
+  }
+
   var dataUpdate = function() {
     // get input fields
     $('#kmw-fields input').each(function(){
@@ -165,32 +198,6 @@ $(document).ready(function(){
       };
     })
     //console.log('dataUpdated', $.kmw)
-  }
-
-  var formUpdate = function(data) {
-    formReset();
-
-    $('#kmw-fields input').each(function(){
-      // get key from id
-      element_name = $(this).attr("id").substr(8)
-
-      for (var i = 0; i < $.kmw.length; i++) {
-        if ($["kmw"][i]["element"] == element_name) {
-          $(this).val($["kmw"][i]["v"])
-        }
-      };
-    })
-
-    $('#kmw-fields select').each(function(){
-      // get key from id
-      element_name = $(this).attr("id").substr(8)
-
-      for (var i = 0; i < $.kmw.length; i++) {
-        if ($["kmw"][i]["element"] == element_name) {
-          $(this).val($["kmw"][i]["v"])
-        }
-      };
-    })
   }
 
   var clearFeedback = function() {
