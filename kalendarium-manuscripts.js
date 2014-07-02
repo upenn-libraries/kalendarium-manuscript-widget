@@ -1,4 +1,9 @@
 $(document).ready(function(){
+  //@local
+  //var url_target = 'http://localhost:5000';
+  //@remote
+  var url_target = 'http://kalendarium-manuscripts.herokuapp.com/'
+
 
   var bootstrap = function() {
     var elements = $.kmw
@@ -38,59 +43,6 @@ $(document).ready(function(){
     $('#kmw-val-mid').parent().addClass('input-group');
     $('#kmw-val-mid').after('<span class="input-group-btn"><input type="button" id="kmw-find" class="btn btn-default" value="Find" /></span>');
   }
-
-  //@local
-  var url_target = 'http://localhost:5000';
-  //@remote
-  //var url_target = 'http://immense-caverns-1369.herokuapp.com'
-
-  $.kmw = [
-    {'element':'mid', 'v':'', 'label':'ID', 'fieldtype':'text'},
-    {'element':'name', 'label':'Name', 'v':'', 'fieldtype':'text'}, // text
-    {'element':'provenance', 'label':'Provenance', 'v':'', 'fieldtype':'text'},
-
-    {'element':'shelfmark', 'label':'Shelfmark', 'v':'', 'fieldtype':'text'}, //text
-    {'element':'mtype', 'label':'Book Type', 'v':'', 'fieldtype':'text', 'options':''},  // list
-    {'element':'is_integral', 'label':'Is the calendar integral?', 'v':'', 'fieldtype':'list', 'options':{'1':'Yes','0':'No'}}, //bool
-    {'element':'ms_or_print', 'label':'Manuscript or Print', 'v':'', 'fieldtype':'list', 'options':{'0':'Unknown','manuscript':'Manuscript','print':'Print'}}, //bool
-    {'element':'language', 'label':'Language', 'v':'', 'fieldtype':'text', 'options':''}, //list?
-    {'element':'origin', 'label':'Origin / Place', 'v':'', 'fieldtype':'text', 'options':''},  //text
-    {'element':'origin_note', 'label':'Origin Note', 'v':'', 'fieldtype':'text', 'options':''},  //text
-    {'element':'destination', 'label':'Destination', 'v':'', 'fieldtype':'text', 'options':''},  //text
-    {'element':'destination_note', 'label':'Destination note', 'v':'', 'fieldtype':'text', 'options':''},  //text
-    {'element':'script', 'label':'Script', 'v':'', 'fieldtype':'text', 'options':''},  //text
-    {'element':'dimensions', 'label':'Physical Dimensions', 'v':'', 'fieldtype':'text', 'options':''},  //comp
-    {'element':'tb_size', 'label':'Text block size', 'v':'', 'fieldtype':'text', 'options':''}, //composite?
-    {'element':'ms_date', 'label':'Manuscript date', 'v':'', 'fieldtype':'text', 'options':''},  //date/range
-    {'element':'ms_date_note', 'label':'Manuscript date note', 'v':'', 'fieldtype':'text', 'options':''}, //text
-    {'element':'extent', 'label':'Extent', 'v':'', 'fieldtype':'text', 'options':''},  //formula
-    {'element':'completion', 'label':'State of completion', 'v':'', 'fieldtype':'text', 'options':''},  //text
-    {'element':'resource', 'label':'Resource', 'v':'', 'fieldtype':'text', 'options':''}  // url and isbn
-  ]
-
-  bootstrap();
-
-  // On any click, update the object with the most recent form info
-  $('#kmw').on('click', 'input', function(){
-    // Don't overwrite fields if we're doing a lookup
-    if ($(this).attr('id') !== 'kmw-find' && $(this).attr('id') !== 'kmw-clear' ) {
-      dataUpdate();
-
-      // Submit an upsert if we have a manuscript id
-      if ($('#kmw-val-mid').val() !== '') {
-        submitEdit($('#kmw-val-mid').val());
-      }
-    }
-  });
-
-  $('#kmw').on('click', '#kmw-find', function(event){
-    submitLookup($('#kmw-val-mid').val());
-  });
-  $('#kmw').on('click', '#kmw-clear', function(event){
-    formReset();
-    dataUpdate();
-    clearFeedback();
-  });
 
   var submitLookup = function(m_id) {
     formReset()
@@ -250,6 +202,55 @@ $(document).ready(function(){
     $('#kmw .alert-warning').removeClass('alert-warning')
     $('#kmw-messages').text('')
   }
+
+    $.kmw = [
+    {'element':'mid', 'v':'', 'label':'ID', 'fieldtype':'text'},
+    {'element':'name', 'label':'Name', 'v':'', 'fieldtype':'text'}, // text
+    {'element':'provenance', 'label':'Provenance', 'v':'', 'fieldtype':'text'},
+
+    {'element':'shelfmark', 'label':'Shelfmark', 'v':'', 'fieldtype':'text'}, //text
+    {'element':'mtype', 'label':'Book Type', 'v':'', 'fieldtype':'text', 'options':''},  // list
+    {'element':'is_integral', 'label':'Is the calendar integral?', 'v':'', 'fieldtype':'list', 'options':{'1':'Yes','0':'No'}}, //bool
+    {'element':'ms_or_print', 'label':'Manuscript or Print', 'v':'', 'fieldtype':'list', 'options':{'0':'Unknown','manuscript':'Manuscript','print':'Print'}}, //bool
+    {'element':'language', 'label':'Language', 'v':'', 'fieldtype':'text', 'options':''}, //list?
+    {'element':'origin', 'label':'Origin / Place', 'v':'', 'fieldtype':'text', 'options':''},  //text
+    {'element':'origin_note', 'label':'Origin Note', 'v':'', 'fieldtype':'text', 'options':''},  //text
+    {'element':'destination', 'label':'Destination', 'v':'', 'fieldtype':'text', 'options':''},  //text
+    {'element':'destination_note', 'label':'Destination note', 'v':'', 'fieldtype':'text', 'options':''},  //text
+    {'element':'script', 'label':'Script', 'v':'', 'fieldtype':'text', 'options':''},  //text
+    {'element':'dimensions', 'label':'Physical Dimensions', 'v':'', 'fieldtype':'text', 'options':''},  //comp
+    {'element':'tb_size', 'label':'Text block size', 'v':'', 'fieldtype':'text', 'options':''}, //composite?
+    {'element':'ms_date', 'label':'Manuscript date', 'v':'', 'fieldtype':'text', 'options':''},  //date/range
+    {'element':'ms_date_note', 'label':'Manuscript date note', 'v':'', 'fieldtype':'text', 'options':''}, //text
+    {'element':'extent', 'label':'Extent', 'v':'', 'fieldtype':'text', 'options':''},  //formula
+    {'element':'completion', 'label':'State of completion', 'v':'', 'fieldtype':'text', 'options':''},  //text
+    {'element':'resource', 'label':'Resource', 'v':'', 'fieldtype':'text', 'options':''}  // url and isbn
+  ]
+
+  bootstrap();
+
+  // On any click, update the object with the most recent form info
+  $('#kmw').on('click', 'input', function(){
+    // Don't overwrite fields if we're doing a lookup
+    if ($(this).attr('id') !== 'kmw-find' && $(this).attr('id') !== 'kmw-clear' ) {
+      dataUpdate();
+
+      // Submit an upsert if we have a manuscript id
+      if ($('#kmw-val-mid').val() !== '') {
+        submitEdit($('#kmw-val-mid').val());
+      }
+    }
+  });
+
+  $('#kmw').on('click', '#kmw-find', function(event){
+    submitLookup($('#kmw-val-mid').val());
+  });
+  $('#kmw').on('click', '#kmw-clear', function(event){
+    formReset();
+    dataUpdate();
+    clearFeedback();
+  });
+
 
 });
 
