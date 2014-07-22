@@ -11,7 +11,7 @@ $(document).ready(function(){
     var elements = $.kmw
 
     // @todo change to display title at top
-    $form = $('<form id="kmw" role="form"><h1>Manuscript Lookup</h1><div id="kmw-messages" class="alert"></div><div id=kmw-fields></div><input type="button" id="kmw-add" class="btn btn-default" value="Add" /><input type="button" id="kmw-clear" class="btn btn-default" value="clear" /></form>');
+    $form = $('<form id="kmw" role="form"><h1>Manuscript Lookup</h1><div id="kmw-messages" class="alert"></div><div id=kmw-fields></div><input type="button" id="kmw-clear" class="btn btn-default" value="Clear" /></form>');
 
     // Add the form to the expected container
     $('#kmw-container').append($form);
@@ -52,11 +52,14 @@ $(document).ready(function(){
     $('#kmw-val-mid').parent().addClass('input-group');
     $('#kmw-val-mid').after('<span class="input-group-btn"><input type="button" id="kmw-find" class="btn btn-default" value="Find" /></span>');
 
+    $('#kmw-fields').after('<input type="button" id="kmw-add" class="btn btn-default" value="Add New" />');
+
   }
 
   var editForm = function() {
     $('#kmw-fields').removeClass('lookup');
     $('#kmw-fields').addClass('editing');
+    $('#kmw-add').remove();
 
     var elements = $.kmw
 
@@ -168,24 +171,22 @@ $(document).ready(function(){
     });
   }
 
-  // deprecated, retained for reference
+  // Get a new unique manuscript ID from the service
   var submitAdd = function() {
 
-    var post_obj = new Object();
-    for (var i = 0; i < $.kmw.length; i++) {
-      post_obj[$.kmw[i].element] = $.kmw[i].v
-    };
-
-    var post_string = JSON.stringify(post_obj);
-
+    // Submit a lookup to get a new unique manuscript ID
     $.ajax({
       url: url_target + '/api/manuscript/add',
-      type: 'POST',
-      data: post_string,
       dataType: 'json',
       crossDomain: true,
       success: function(data)
       {
+
+        // remove the form fields and replace with the 'edit' group
+        $('#kmw-fields .form-group').remove();
+        $["kmw"][0]["v"] = data.m_id //@todo FIX ME
+        editForm();
+        formUpdate();
         //console.log('return' , data)
       },
       error: function(data)
@@ -381,6 +382,11 @@ $(document).ready(function(){
     editForm();
     submitLookup(m_id);
   });
+
+  $('#kmw').on('click', '#kmw-add', function(event){
+    submitAdd();
+  });
+
   $('#kmw').on('click', '#kmw-clear', function(event){
 
     formReset();
