@@ -153,6 +153,17 @@ $(document).ready(function(){
               if($.kmw[i].element == key){
                 $["kmw"][i]["v"] = value
               }
+              else {
+                if ($.kmw[i].group) {
+
+                  for (var c = 0; c < $.kmw[i].group.length; c++) {
+                    if ($.kmw[i].group[c].element == key) {
+                      $.kmw[i].group[c].v = value
+                    }
+                  }
+                }
+              }
+
             };
           })
 
@@ -199,7 +210,16 @@ $(document).ready(function(){
   var submitEdit = function(m_id) {
     var post_obj = new Object();
     for (var i = 0; i < $.kmw.length; i++) {
-      post_obj[$.kmw[i].element] = $.kmw[i].v
+      if ($.kmw[i].group) {
+
+        for (var c = 0; c < $.kmw[i].group.length; c++) {
+
+          post_obj[$.kmw[i].group[c].element] = $.kmw[i].group[c].v
+        }
+
+      } else {
+        post_obj[$.kmw[i].element] = $.kmw[i].v
+      }
     };
 
     var post_string = JSON.stringify(post_obj);
@@ -235,7 +255,7 @@ $(document).ready(function(){
   var formUpdate = function(data) {
     formReset();
 
-    $('#kmw-fields input').each(function(){
+    $('#kmw-fields input,#kmw-fields select').each(function(){
       // get key from id
       element_name = $(this).attr("id").substr(8)
 
@@ -243,19 +263,20 @@ $(document).ready(function(){
         if ($["kmw"][i]["element"] == element_name) {
           $(this).val($["kmw"][i]["v"])
         }
-      };
-    })
+        else {
+          if ($.kmw[i].group) {
+            for (var c = 0; c < $.kmw[i].group.length; c++) {
+              if ($.kmw[i].group[c].element == element_name) {
 
-    $('#kmw-fields select').each(function(){
-      // get key from id
-      element_name = $(this).attr("id").substr(8)
+                $(this).val($.kmw[i].group[c].v)
 
-      for (var i = 0; i < $.kmw.length; i++) {
-        if ($["kmw"][i]["element"] == element_name) {
-          $(this).val($["kmw"][i]["v"])
+              }
+            }
+          }
         }
       };
     })
+
   }
 
   var dataReset = function() {
@@ -266,28 +287,29 @@ $(document).ready(function(){
 
   var dataUpdate = function() {
     // get input fields
-    $('#kmw-fields input').each(function(){
+    $('#kmw-fields input,#kmw-fields select').each(function(){
       // get key from id
       element_name = $(this).attr("id").substr(8)
 
       for (var i = 0; i < $.kmw.length; i++) {
+
         if ($["kmw"][i]["element"] == element_name) {
           $["kmw"][i]["v"] = $(this).val()
+        }
+        else {
+          if ($.kmw[i].group) {
+            for (var c = 0; c < $.kmw[i].group.length; c++) {
+              if ($.kmw[i].group[c].element == element_name) {
+
+                $.kmw[i].group[c].v = $(this).val()
+
+              }
+            }
+          }
         }
       };
     })
 
-    // get select fields
-    $('#kmw-fields select').each(function(){
-      // get key from id
-      element_name = $(this).attr("id").substr(8)
-
-      for (var i = 0; i < $.kmw.length; i++) {
-        if ($["kmw"][i]["element"] == element_name) {
-          $["kmw"][i]["v"] = $(this).val()
-        }
-      };
-    })
   }
 
   var clearFeedback = function() {
