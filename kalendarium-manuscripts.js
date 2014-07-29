@@ -7,7 +7,7 @@ $(document).ready(function(){
   //@local
   var kmw_url_target = 'http://localhost:5000';
 
-  var kmwBootstrap = function() {
+  kmwBootstrap = function() {
     var elements = $.kmw
 
     // @todo change to display title at top
@@ -20,7 +20,7 @@ $(document).ready(function(){
     kmwLookupForm();
   }
 
-  var kmwLookupForm = function() {
+  kmwLookupForm = function() {
     $('#kmw-fields').removeClass('editing');
     $('#kmw-fields').addClass('lookup');
 
@@ -56,7 +56,7 @@ $(document).ready(function(){
 
   }
 
-  var kmwEditForm = function() {
+  kmwEditForm = function() {
     $('#kmw-fields').removeClass('lookup');
     $('#kmw-fields').addClass('editing');
     $('#kmw-add').remove();
@@ -136,7 +136,7 @@ $(document).ready(function(){
   }
 
   //  Lookups use the internal ID, Name, and Shelfmark
-  var kmwSubmitLookup = function(m_id) {
+  kmwSubmitLookup = function(m_id) {
 
     kmwDataReset()
     kmwFormReset()
@@ -183,7 +183,7 @@ $(document).ready(function(){
   }
 
   // Get a new unique manuscript ID from the service
-  var kmwSubmitAdd = function() {
+  kmwSubmitAdd = function() {
 
     // Submit a lookup to get a new unique manuscript ID
     $.ajax({
@@ -207,7 +207,7 @@ $(document).ready(function(){
     });
   }
 
-  var kmwSubmitEdit = function(m_id) {
+  kmwSubmitEdit = function(m_id) {
     var post_obj = new Object();
     for (var i = 0; i < $.kmw.length; i++) {
       if ($.kmw[i].group) {
@@ -242,7 +242,7 @@ $(document).ready(function(){
   }
 
   // Reset form data and timers
-  var kmwFormReset = function() {
+  kmwFormReset = function() {
     // reset form values
     $('#kmw-fields input').not('#kmw-find').each(function(){
       $(this).val('')
@@ -252,7 +252,7 @@ $(document).ready(function(){
     $('#kmw-fields select').find("option[value='0']").attr("selected","selected");
   }
 
-  var kmwFormUpdate = function(data) {
+  kmwFormUpdate = function(data) {
     kmwFormReset();
 
     $('#kmw-fields input,#kmw-fields select').each(function(){
@@ -279,13 +279,13 @@ $(document).ready(function(){
 
   }
 
-  var kmwDataReset = function() {
+  kmwDataReset = function() {
     for (var i = 0; i < $.kmw.length; i++) {
       $["kmw"][i]["v"] = ''
     };
   }
 
-  var kmwDataUpdate = function() {
+  kmwDataUpdate = function() {
     // get input fields
     $('#kmw-fields input,#kmw-fields select').each(function(){
       // get key from id
@@ -312,7 +312,7 @@ $(document).ready(function(){
 
   }
 
-  var kmwClearFeedback = function() {
+  kmwClearFeedback = function() {
     // remove feedback formatting
     $('#kmw-fields .has-feedback').removeClass('has-feedback')
     $('#kmw-fields .has-success').removeClass('has-success')
