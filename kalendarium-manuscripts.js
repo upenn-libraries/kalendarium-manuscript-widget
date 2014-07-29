@@ -1,11 +1,11 @@
 $(document).ready(function(){
 
   //@remote
-  var kmw_url_target = 'http://kalendarium-manuscripts.herokuapp.com/'
+  // var kmw_url_target = 'http://kalendarium-manuscripts.herokuapp.com/'
   // @todo - add check to make sure it's up before we do anything
 
   //@local
-  //var kmw_url_target = 'http://localhost:5000';
+  var kmw_url_target = 'http://localhost:5000';
 
   var kmwBootstrap = function() {
     var elements = $.kmw
