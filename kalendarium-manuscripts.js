@@ -1,13 +1,13 @@
 $(document).ready(function(){
 
   //@remote
-  //var url_target = 'http://kalendarium-manuscripts.herokuapp.com/'
+  var kmw_url_target = 'http://kalendarium-manuscripts.herokuapp.com/'
   // @todo - add check to make sure it's up before we do anything
 
   //@local
-  var url_target = 'http://localhost:5000';
+  //var kmw_url_target = 'http://localhost:5000';
 
-  var bootstrap = function() {
+  var kmwBootstrap = function() {
     var elements = $.kmw
 
     // @todo change to display title at top
@@ -17,10 +17,10 @@ $(document).ready(function(){
     $('#kmw-container').append($form);
 
     // Set the lookup form as the default form field group
-    lookupForm();
+    kmwLookupForm();
   }
 
-  var lookupForm = function() {
+  var kmwLookupForm = function() {
     $('#kmw-fields').removeClass('editing');
     $('#kmw-fields').addClass('lookup');
 
@@ -56,7 +56,7 @@ $(document).ready(function(){
 
   }
 
-  var editForm = function() {
+  var kmwEditForm = function() {
     $('#kmw-fields').removeClass('lookup');
     $('#kmw-fields').addClass('editing');
     $('#kmw-add').remove();
@@ -136,12 +136,12 @@ $(document).ready(function(){
   }
 
   //  Lookups use the internal ID, Name, and Shelfmark
-  var submitLookup = function(m_id) {
+  var kmwSubmitLookup = function(m_id) {
 
-    dataReset()
-    formReset()
+    kmwDataReset()
+    kmwFormReset()
     $.ajax({
-      url: url_target + '/api/manuscript/' + m_id,
+      url: kmw_url_target + '/api/manuscript/' + m_id,
       dataType: 'json',
       crossDomain: true,
       success: function(data)
@@ -167,12 +167,12 @@ $(document).ready(function(){
             };
           })
 
-          clearFeedback()
+          kmwClearFeedback()
           $('#kmw-val-mid').closest('.form-group').addClass('has-success has-feedback')
-          formUpdate()
+          kmwFormUpdate()
         }
         else {
-          clearFeedback()
+          kmwClearFeedback()
           $('#kmw-val-mid').closest('.form-group').addClass('has-error has-feedback')
           $('#kmw-clear').click()
 
@@ -183,11 +183,11 @@ $(document).ready(function(){
   }
 
   // Get a new unique manuscript ID from the service
-  var submitAdd = function() {
+  var kmwSubmitAdd = function() {
 
     // Submit a lookup to get a new unique manuscript ID
     $.ajax({
-      url: url_target + '/api/manuscript/add',
+      url: kmw_url_target + '/api/manuscript/add',
       dataType: 'json',
       crossDomain: true,
       success: function(data)
@@ -196,8 +196,8 @@ $(document).ready(function(){
         // remove the form fields and replace with the 'edit' group
         $('#kmw-fields .form-group').remove();
         $["kmw"][0]["v"] = data.m_id //@todo FIX ME
-        editForm();
-        formUpdate();
+        kmwEditForm();
+        kmwFormUpdate();
         //console.log('return' , data)
       },
       error: function(data)
@@ -207,7 +207,7 @@ $(document).ready(function(){
     });
   }
 
-  var submitEdit = function(m_id) {
+  var kmwSubmitEdit = function(m_id) {
     var post_obj = new Object();
     for (var i = 0; i < $.kmw.length; i++) {
       if ($.kmw[i].group) {
@@ -225,7 +225,7 @@ $(document).ready(function(){
     var post_string = JSON.stringify(post_obj);
 
     $.ajax({
-      url: url_target + '/api/manuscript/' + m_id + '/edit',
+      url: kmw_url_target + '/api/manuscript/' + m_id + '/edit',
       type: 'POST',
       data: post_string,
       dataType: 'json',
@@ -242,7 +242,7 @@ $(document).ready(function(){
   }
 
   // Reset form data and timers
-  var formReset = function() {
+  var kmwFormReset = function() {
     // reset form values
     $('#kmw-fields input').not('#kmw-find').each(function(){
       $(this).val('')
@@ -252,8 +252,8 @@ $(document).ready(function(){
     $('#kmw-fields select').find("option[value='0']").attr("selected","selected");
   }
 
-  var formUpdate = function(data) {
-    formReset();
+  var kmwFormUpdate = function(data) {
+    kmwFormReset();
 
     $('#kmw-fields input,#kmw-fields select').each(function(){
       // get key from id
@@ -279,13 +279,13 @@ $(document).ready(function(){
 
   }
 
-  var dataReset = function() {
+  var kmwDataReset = function() {
     for (var i = 0; i < $.kmw.length; i++) {
       $["kmw"][i]["v"] = ''
     };
   }
 
-  var dataUpdate = function() {
+  var kmwDataUpdate = function() {
     // get input fields
     $('#kmw-fields input,#kmw-fields select').each(function(){
       // get key from id
@@ -312,7 +312,7 @@ $(document).ready(function(){
 
   }
 
-  var clearFeedback = function() {
+  var kmwClearFeedback = function() {
     // remove feedback formatting
     $('#kmw-fields .has-feedback').removeClass('has-feedback')
     $('#kmw-fields .has-success').removeClass('has-success')
@@ -324,14 +324,13 @@ $(document).ready(function(){
 
   // Massive configuration array
   $.kmw = [
+    // Search / lookup elements
     {'element':'mid', 'v':'', 'label':'ID', 'fieldtype':'text'},
-    {'element':'name', 'label':'Name', 'v':'', 'fieldtype':'text'}, // text
-    {'element':'provenance', 'label':'Provenance', 'v':'', 'fieldtype':'text'},
+    {'element':'name', 'label':'Name', 'v':'', 'fieldtype':'text'},
+    {'element':'shelfmark', 'label':'Shelfmark', 'v':'', 'fieldtype':'text'},
 
-    {'element':'shelfmark', 'label':'Shelfmark', 'v':'', 'fieldtype':'text'}, //text
-    {'element':'mtype', 'label':'Book Type', 'v':'', 'fieldtype':'text', 'options':''},  // list
-    {'element':'is_integral', 'label':'Is the calendar integral?', 'v':'', 'fieldtype':'list', 'options':{'1':'Yes','0':'No'}}, //bool
-
+    // Calendar elements
+    {'element':'is_integral', 'label':'Is the calendar integral?', 'v':'', 'fieldtype':'list', 'options':{'1':'Yes','0':'No'}},
     {'element':'grading', 'label':'Grading (Importance)', 'fieldtype':'group', 'group':[
       {'element':'grade_black', 'label':'Black', 'v':'', 'fieldtype':'list', 'options':{'0':'','1':'1','2':'2','3':'3','4':'4'}},
       {'element':'grade_blue', 'label':'Blue', 'v':'', 'fieldtype':'list', 'options':{'0':'','1':'1','2':'2','3':'3','4':'4'}},
@@ -340,27 +339,45 @@ $(document).ready(function(){
     ]},
 
     {'element':'shading', 'label':'Has shading?', 'v':'', 'fieldtype':'list', 'options':{'1':'Yes','0':'No'}},
-    {'element':'ms_or_print', 'label':'Manuscript or Print', 'v':'', 'fieldtype':'list', 'options':{'0':'Unknown','manuscript':'Manuscript','print':'Print'}}, //bool
+    {'element':'folio_sides', 'label':'Folio Sides', 'v':'', 'fieldtype':'group', 'group': [
+      {'element':'folio_start_num', 'label':'Start', 'v':'', 'fieldtype':'text', 'options':''},
+      {'element':'folio_start_side', 'label':'', 'v':'', 'fieldtype':'list', 'options':{'0':'','1':'R','2':'V'}},
+      {'element':'folio_end_num', 'label':'End', 'v':'', 'fieldtype':'text', 'options':''},
+      {'element':'folio_end_side', 'label':'', 'v':'', 'fieldtype':'list', 'options':{'0':'','1':'R','2':'V'}},
+
+    ]},
+    {'element':'columns', 'label':'Columns', 'fieldtype':'group', 'group': [
+      {'element':'cal_col_1', 'label':'1', 'v':'', 'fieldtype':'list', 'options':{'0':'','number':'Golden Number','letter':'Domnical Letter','kni':'Kalend, Nones, Ideas','day':'Roman Day','text':'Text'}},
+      {'element':'cal_col_2', 'label':'2', 'v':'', 'fieldtype':'list', 'options':{'0':'','number':'Golden Number','letter':'Domnical Letter','kni':'Kalend, Nones, Ideas','day':'Roman Day','text':'Text'}},
+      {'element':'cal_col_3', 'label':'3', 'v':'', 'fieldtype':'list', 'options':{'0':'','number':'Golden Number','letter':'Domnical Letter','kni':'Kalend, Nones, Ideas','day':'Roman Day','text':'Text'}},
+      {'element':'cal_col_4', 'label':'4', 'v':'', 'fieldtype':'list', 'options':{'0':'','number':'Golden Number','letter':'Domnical Letter','kni':'Kalend, Nones, Ideas','day':'Roman Day','text':'Text'}},
+      {'element':'cal_col_5', 'label':'5', 'v':'', 'fieldtype':'list', 'options':{'0':'','number':'Golden Number','letter':'Domnical Letter','kni':'Kalend, Nones, Ideas','day':'Roman Day','text':'Text'}}
+    ]},
+
+    // General manuscript elements
+    {'element':'mtype', 'label':'Book Type', 'v':'', 'fieldtype':'text', 'options':''},
+    {'element':'ms_or_print', 'label':'Manuscript or Print', 'v':'', 'fieldtype':'list', 'options':{'0':'Unknown','manuscript':'Manuscript','print':'Print'}},
     {'element':'language', 'label':'Language', 'v':'', 'fieldtype':'text', 'options':''}, //list?
-    {'element':'origin', 'label':'Origin / Place', 'v':'', 'fieldtype':'text', 'options':''},  //text
-    {'element':'origin_note', 'label':'Origin Note', 'v':'', 'fieldtype':'text', 'options':''},  //text
-    {'element':'destination', 'label':'Destination', 'v':'', 'fieldtype':'text', 'options':''},  //text
-    {'element':'destination_note', 'label':'Destination note', 'v':'', 'fieldtype':'text', 'options':''},  //text
-    {'element':'script', 'label':'Script', 'v':'', 'fieldtype':'text', 'options':''},  //text
+    {'element':'origin', 'label':'Origin / Place', 'v':'', 'fieldtype':'text', 'options':''},
+    {'element':'origin_note', 'label':'Origin Note', 'v':'', 'fieldtype':'text', 'options':''},
+    {'element':'destination', 'label':'Destination', 'v':'', 'fieldtype':'text', 'options':''},
+    {'element':'destination_note', 'label':'Destination note', 'v':'', 'fieldtype':'text', 'options':''},
+    {'element':'script', 'label':'Script', 'v':'', 'fieldtype':'text', 'options':''},
 
-    // length x width x height, limited to .5 cm
-    {'element':'dimensions', 'label':'Physical Dimensions', 'fieldtype':'group', 'group': [
-      {'element':'dim_length', 'label':'L', 'v':'', 'fieldtype':'text', 'options':''},
-      {'element':'dim_width', 'label':'W', 'v':'', 'fieldtype':'text', 'options':''},
-      {'element':'dim_height', 'label':'H', 'v':'', 'fieldtype':'text', 'options':''}
-    ]},  //comp
-
-    // length x width x height, limited to .5 cm
-    {'element':'tb_dimensions', 'label':'Text block dimensions', 'fieldtype':'group', 'group': [
-      {'element':'tb_dim_length', 'label':'L', 'v':'', 'fieldtype':'text', 'options':''},
+    // height x width x depth
+    // @todo limited to .5 cm
+    {'element':'tb_dimensions', 'label':'Text block dimensions (mm)', 'fieldtype':'group', 'group': [
+      {'element':'tb_dim_height', 'label':'H', 'v':'', 'fieldtype':'text', 'options':''},
       {'element':'tb_dim_width', 'label':'W', 'v':'', 'fieldtype':'text', 'options':''},
-      {'element':'tb_dim_height', 'label':'H', 'v':'', 'fieldtype':'text', 'options':''}
-    ]},  //comp
+      {'element':'tb_dim_depth', 'label':'D', 'v':'', 'fieldtype':'text', 'options':''}
+    ]},
+
+     // heigh x width
+     // @todo limited to .5 cm
+    {'element':'ws_dimensions', 'label':'Writing Surface (mm)', 'fieldtype':'group', 'group': [
+      {'element':'ws_dim_height', 'label':'H', 'v':'', 'fieldtype':'text', 'options':''},
+      {'element':'ws_dim_width', 'label':'W', 'v':'', 'fieldtype':'text', 'options':''}
+    ]},
 
     // Dates are a set of dropdowns that provide [modifier][year] - [modifier][year]
     {'element':'ms_date', 'label':'Manuscript date', 'v':'', 'fieldtype':'group', 'group': [
@@ -368,26 +385,26 @@ $(document).ready(function(){
       {'element':'ms_date_start', 'label':'', 'v':'', 'fieldtype':'text', 'options':''},
       {'element':'ms_date_end_mod', 'label':'End', 'v':'', 'fieldtype':'list', 'options':{'0':'','1':'Early','2':'Mid','3':'Late'}},
       {'element':'ms_date_end', 'label':'', 'v':'', 'fieldtype':'text', 'options':''}
-
-    ]},  //date/range
-    {'element':'ms_date_note', 'label':'Manuscript date note', 'v':'', 'fieldtype':'text', 'options':''}, //text
+    ]},
+    {'element':'ms_date_note', 'label':'Manuscript date note', 'v':'', 'fieldtype':'text', 'options':''},
     {'element':'extent', 'label':'Extent', 'v':'', 'fieldtype':'text', 'options':''},  //formula
-    {'element':'completion', 'label':'State of completion', 'v':'', 'fieldtype':'text', 'options':''},  //text
+    {'element':'provenance', 'label':'Provenance', 'v':'', 'fieldtype':'text'},
+    {'element':'completion', 'label':'State of completion', 'v':'', 'fieldtype':'text', 'options':''},
     {'element':'resource', 'label':'Resource', 'v':'', 'fieldtype':'text', 'options':''}  // url and isbn
   ]
 
   // Bootstrap the application
-  bootstrap();
+  kmwBootstrap();
 
   // On any click, update the object with the most recent form info
   $('#kmw').on('click', 'input', function(){
     // Don't overwrite fields if we're doing a lookup
     if ($('#kmw-fields').hasClass('editing')) {
-      dataUpdate();
+      kmwDataUpdate();
 
       // Submit an upsert if we have a manuscript id
       if ($('#kmw-val-mid').val() !== '') {
-        submitEdit($('#kmw-val-mid').val());
+        kmwSubmitEdit($('#kmw-val-mid').val());
       }
     }
 
@@ -401,23 +418,23 @@ $(document).ready(function(){
     // remove the form fields and replace with the 'edit' group
     $('#kmw-fields .form-group').remove();
 
-    editForm();
-    submitLookup(m_id);
+    kmwEditForm();
+    kmwSubmitLookup(m_id);
   });
 
   $('#kmw').on('click', '#kmw-add', function(event){
-    submitAdd();
+    kmwSubmitAdd();
   });
 
   $('#kmw').on('click', '#kmw-clear', function(event){
 
-    formReset();
-    dataUpdate();
-    clearFeedback();
+    kmwFormReset();
+    kmwDataUpdate();
+    kmwClearFeedback();
 
     // remove the form fields and replace with the 'edit' group
     $('#kmw-fields .form-group').remove();
-    lookupForm();
+    kmwLookupForm();
   });
 });
 
