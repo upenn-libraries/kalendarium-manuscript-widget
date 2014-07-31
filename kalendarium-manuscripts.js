@@ -70,11 +70,17 @@ $(document).ready(function(){
       // Wrap each collection field for bootstrap
       var $formElement = $('<div class="form-group"></div>');
 
-      var $elementLabel = $('<label class="control-label" for="#kmw-val-' + $this[0].element + '">' + $this[0].label + '</label>');
+      if ($this[0].label.length > 0) {
+        var $elementLabel = $('<label class="control-label" for="#kmw-val-' + $this[0].element + '">' + $this[0].label + '</label>');
+      }
 
       // Add a basic input field object
       if ($this[0].fieldtype === 'text') {
         var $elementContainer = $('<div class=""><input type="textfield" class="form-control" id="kmw-val-' + $this[0].element + '"></div>');
+
+      // Add a hidden field input object
+      } else if ($this[0].fieldtype === 'hidden') {
+        var $elementContainer = $('<div class=""><input type="hidden" class="form-control" id="kmw-val-' + $this[0].element + '"></div>');
 
       // Add a select field object
       } else if ($this[0].fieldtype === 'list') {
@@ -100,6 +106,10 @@ $(document).ready(function(){
 
             var subfield = $('<input type="textfield" class="form-control" id="kmw-val-' + $(this)[0].element + '">');
             $($elementContainer).find('#kmw-val-' + groupId).append(subfieldLabel, subfield)
+
+          } else if ($(this)[0].fieldtype === 'hidden') {
+            var subfield = $('<input type="hidden" class="form-control" id="kmw-val-' + $(this)[0].element + '">');
+            $($elementContainer).find('#kmw-val-' + groupId).append(subfield)
 
           } else if ($(this)[0].fieldtype === 'list') {
 
@@ -353,6 +363,9 @@ $(document).ready(function(){
       {'element':'cal_col_4', 'label':'4', 'v':'', 'fieldtype':'list', 'options':{'0':'','number':'Golden Number','letter':'Domnical Letter','kni':'Kalend, Nones, Ideas','day':'Roman Day','text':'Text'}},
       {'element':'cal_col_5', 'label':'5', 'v':'', 'fieldtype':'list', 'options':{'0':'','number':'Golden Number','letter':'Domnical Letter','kni':'Kalend, Nones, Ideas','day':'Roman Day','text':'Text'}}
     ]},
+
+    // The Shared Canvas maifest ID for this calendar
+    {'element':'sc_cal_manifest_id', 'label': '', 'v':'', 'fieldtype':'hidden', 'options':''},
 
     // General manuscript elements
     {'element':'mtype', 'label':'Book Type', 'v':'', 'fieldtype':'text', 'options':''},
