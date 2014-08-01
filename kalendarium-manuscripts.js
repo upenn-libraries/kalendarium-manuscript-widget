@@ -1,11 +1,14 @@
 $(document).ready(function(){
-
   //@remote
   var kmw_url_target = 'http://kalendarium-manuscripts.herokuapp.com/'
   // @todo - add check to make sure it's up before we do anything
 
   //@local
-  //var kmw_url_target = 'http://localhost:5000';
+  is_local = window.location.search.substring(1).split('&')
+  if (is_local[0] == "local=true") {
+    console.log('Using local app')
+    kmw_url_target = 'http://localhost:5000';
+  }
 
   var kmwBootstrap = function() {
     var elements = $.kmw
@@ -23,9 +26,9 @@ $(document).ready(function(){
 
   window.kmwBrowseForm = function(elements) {
     $('#kmw-fields').hide()
-    var listTable = $('<table id="kmw-browse"><th>ID</th><th>Name</th><th>Shelfmark</th></table>')
+    var listTable = $('<table id="kmw-browse" class="table"><th>ID</th><th>Name</th><th>Shelfmark</th></table>')
     for (var i = 0; i < elements.length; i++) {
-      var manuscript = '<tr><td>' + elements[i].mid + '</td><td>'+ elements[i].name + '</td><td>' + elements[i].shelfmark + '</td></tr>';
+      var manuscript = '<tr><td><a href="#" class="kmw-lookup-link" data-mid=' + elements[i].mid + '>' + elements[i].mid + '</a></td><td>'+ elements[i].name + '</td><td>' + elements[i].shelfmark + '</td></tr>';
       listTable.append(manuscript);
     }
     $('#kmw-fields').after(listTable)
@@ -361,26 +364,26 @@ $(document).ready(function(){
     // Calendar elements
     {'element':'is_integral', 'label':'Is the calendar integral?', 'v':'', 'fieldtype':'list', 'options':{'1':'Yes','0':'No'}},
     {'element':'grading', 'label':'Grading (Importance)', 'fieldtype':'group', 'group':[
-      {'element':'grade_black', 'label':'Black', 'v':'', 'fieldtype':'list', 'options':{'0':'','1':'1','2':'2','3':'3','4':'4'}},
-      {'element':'grade_blue', 'label':'Blue', 'v':'', 'fieldtype':'list', 'options':{'0':'','1':'1','2':'2','3':'3','4':'4'}},
-      {'element':'grade_red', 'label':'Red', 'v':'', 'fieldtype':'list', 'options':{'0':'','1':'1','2':'2','3':'3','4':'4'}},
-      {'element':'grade_gold', 'label':'Gold', 'v':'', 'fieldtype':'list', 'options':{'0':'','1':'1','2':'2','3':'3','4':'4'}}
+      {'element':'grade_black', 'label':'Black', 'v':'', 'fieldtype':'list', 'options':{'':'','1':'1','2':'2','3':'3','4':'4'}},
+      {'element':'grade_blue', 'label':'Blue', 'v':'', 'fieldtype':'list', 'options':{'':'','1':'1','2':'2','3':'3','4':'4'}},
+      {'element':'grade_red', 'label':'Red', 'v':'', 'fieldtype':'list', 'options':{'':'','1':'1','2':'2','3':'3','4':'4'}},
+      {'element':'grade_gold', 'label':'Gold', 'v':'', 'fieldtype':'list', 'options':{'':'','1':'1','2':'2','3':'3','4':'4'}}
     ]},
 
     {'element':'shading', 'label':'Has shading?', 'v':'', 'fieldtype':'list', 'options':{'1':'Yes','0':'No'}},
     {'element':'folio_sides', 'label':'Folio Sides', 'v':'', 'fieldtype':'group', 'group': [
       {'element':'folio_start_num', 'label':'Start', 'v':'', 'fieldtype':'text', 'options':''},
-      {'element':'folio_start_side', 'label':'', 'v':'', 'fieldtype':'list', 'options':{'0':'','1':'R','2':'V'}},
+      {'element':'folio_start_side', 'label':'', 'v':'', 'fieldtype':'list', 'options':{'':'','R':'R','V':'V'}},
       {'element':'folio_end_num', 'label':'End', 'v':'', 'fieldtype':'text', 'options':''},
-      {'element':'folio_end_side', 'label':'', 'v':'', 'fieldtype':'list', 'options':{'0':'','1':'R','2':'V'}},
+      {'element':'folio_end_side', 'label':'', 'v':'', 'fieldtype':'list', 'options':{'':'','R':'R','V':'V'}},
 
     ]},
     {'element':'columns', 'label':'Columns', 'fieldtype':'group', 'group': [
-      {'element':'cal_col_1', 'label':'1', 'v':'', 'fieldtype':'list', 'options':{'0':'','number':'Golden Number','letter':'Domnical Letter','kni':'Kalend, Nones, Ideas','day':'Roman Day','text':'Text'}},
-      {'element':'cal_col_2', 'label':'2', 'v':'', 'fieldtype':'list', 'options':{'0':'','number':'Golden Number','letter':'Domnical Letter','kni':'Kalend, Nones, Ideas','day':'Roman Day','text':'Text'}},
-      {'element':'cal_col_3', 'label':'3', 'v':'', 'fieldtype':'list', 'options':{'0':'','number':'Golden Number','letter':'Domnical Letter','kni':'Kalend, Nones, Ideas','day':'Roman Day','text':'Text'}},
-      {'element':'cal_col_4', 'label':'4', 'v':'', 'fieldtype':'list', 'options':{'0':'','number':'Golden Number','letter':'Domnical Letter','kni':'Kalend, Nones, Ideas','day':'Roman Day','text':'Text'}},
-      {'element':'cal_col_5', 'label':'5', 'v':'', 'fieldtype':'list', 'options':{'0':'','number':'Golden Number','letter':'Domnical Letter','kni':'Kalend, Nones, Ideas','day':'Roman Day','text':'Text'}}
+      {'element':'cal_col_1', 'label':'1', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalend, Nones, Ideas','day':'Roman Day','text':'Text'}},
+      {'element':'cal_col_2', 'label':'2', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalend, Nones, Ideas','day':'Roman Day','text':'Text'}},
+      {'element':'cal_col_3', 'label':'3', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalend, Nones, Ideas','day':'Roman Day','text':'Text'}},
+      {'element':'cal_col_4', 'label':'4', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalend, Nones, Ideas','day':'Roman Day','text':'Text'}},
+      {'element':'cal_col_5', 'label':'5', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalend, Nones, Ideas','day':'Roman Day','text':'Text'}}
     ]},
 
     // General manuscript elements
@@ -410,9 +413,9 @@ $(document).ready(function(){
 
     // Dates are a set of dropdowns that provide [modifier][year] - [modifier][year]
     {'element':'ms_date', 'label':'Manuscript date', 'v':'', 'fieldtype':'group', 'group': [
-      {'element':'ms_date_start_mod', 'label':'Start', 'v':'', 'fieldtype':'list', 'options':{'0':'','1':'Early','2':'Mid','3':'Late'}},
+      {'element':'ms_date_start_mod', 'label':'Start', 'v':'', 'fieldtype':'list', 'options':{'':'','1':'Early','2':'Mid','3':'Late'}},
       {'element':'ms_date_start', 'label':'', 'v':'', 'fieldtype':'text', 'options':''},
-      {'element':'ms_date_end_mod', 'label':'End', 'v':'', 'fieldtype':'list', 'options':{'0':'','1':'Early','2':'Mid','3':'Late'}},
+      {'element':'ms_date_end_mod', 'label':'End', 'v':'', 'fieldtype':'list', 'options':{'':'','1':'Early','2':'Mid','3':'Late'}},
       {'element':'ms_date_end', 'label':'', 'v':'', 'fieldtype':'text', 'options':''}
     ]},
     {'element':'ms_date_note', 'label':'Manuscript date note', 'v':'', 'fieldtype':'text', 'options':''},
@@ -447,6 +450,17 @@ $(document).ready(function(){
     // Submit the lookup, using m_id if we know it. If not, the function will
     // check the name and shelfmark values.
     kmwSubmitLookup(m_id, m_name, m_shelfmark);
+
+  });
+
+  $('#kmw').on('click', '.kmw-lookup-link', function(event){
+    var m_id = $(this).attr('data-mid')
+    console.log($(this).attr('data-mid'))
+    $('#kmw-browse').remove()
+
+    // Submit the lookup with the known unique ID
+    kmwSubmitLookup(m_id, null, null);
+    $('#kmw-fields').show()
 
   });
 
