@@ -15,12 +15,25 @@ $(document).ready(function(){
 
     // Add the form to the expected container
     $('#kmw-container').append($form);
-
+    //@todo known: add new disappears when clearing from the edit form
+    $('#kmw-fields').after('<input type="button" id="kmw-add" class="btn btn-default" value="Add New" />');
     // Set the lookup form as the default form field group
     kmwLookupForm();
   }
 
-  var kmwLookupForm = function() {
+  window.kmwBrowseForm = function(elements) {
+    $('#kmw-fields').hide()
+    var listTable = $('<table id="kmw-browse"><th>ID</th><th>Name</th><th>Shelfmark</th></table>')
+    for (var i = 0; i < elements.length; i++) {
+      var manuscript = '<tr><td>' + elements[i].mid + '</td><td>'+ elements[i].name + '</td><td>' + elements[i].shelfmark + '</td></tr>';
+      listTable.append(manuscript);
+    }
+    $('#kmw-fields').after(listTable)
+    //@todo need pager
+
+  }
+
+  window.kmwLookupForm = function() {
     $('#kmw-fields').removeClass('editing');
     $('#kmw-fields').addClass('lookup');
 
@@ -52,11 +65,11 @@ $(document).ready(function(){
     $('#kmw-val-mid').parent().addClass('input-group');
     $('#kmw-val-mid').after('<span class="input-group-btn"><input type="button" id="kmw-find" class="btn btn-default" value="Find" /></span>');
 
-    $('#kmw-fields').after('<input type="button" id="kmw-add" class="btn btn-default" value="Add New" />');
+   // $('#kmw-fields').after('<input type="button" id="kmw-add" class="btn btn-default" value="Add New" />');
 
   }
 
-  var kmwEditForm = function() {
+  window.kmwEditForm = function() {
     $('#kmw-fields').removeClass('lookup');
     $('#kmw-fields').addClass('editing');
     $('#kmw-add').remove();
@@ -136,12 +149,19 @@ $(document).ready(function(){
   }
 
   //  Lookups use the internal ID, Name, and Shelfmark
-  var kmwSubmitLookup = function(m_id) {
+  window.kmwSubmitLookup = function(m_id, m_name, m_shelfmark) {
+    var lookup_obj = new Object();
+    lookup_obj['name'] = m_name
+    lookup_obj['shelfmark'] = m_shelfmark
+
+    var post_string = JSON.stringify(lookup_obj);
 
     kmwDataReset()
     kmwFormReset()
     $.ajax({
       url: kmw_url_target + '/api/manuscript/' + m_id,
+      type: 'POST',
+      data: post_string,
       dataType: 'json',
       crossDomain: true,
       success: function(data)
@@ -167,23 +187,33 @@ $(document).ready(function(){
             };
           })
 
+          // if submitted with the ID, then we know it's unique.
+          // remove the form fields and replace with the 'edit' group
+          $('#kmw-fields .form-group').remove();
+          kmwEditForm()
+
           kmwClearFeedback()
           $('#kmw-val-mid').closest('.form-group').addClass('has-success has-feedback')
           kmwFormUpdate()
         }
         else {
           kmwClearFeedback()
-          $('#kmw-val-mid').closest('.form-group').addClass('has-error has-feedback')
           $('#kmw-clear').click()
+          if (data.length > 0) {
+            // return a list of matching manuscripts
+            kmwBrowseForm(data); // submit array/obj containing m's
 
-          $('#kmw-messages').addClass('alert-warning').text("Did not find manuscript " + m_id)
+          } else {
+            $('#kmw-val-mid').closest('.form-group').addClass('has-error has-feedback')
+            $('#kmw-messages').addClass('alert-warning').text("Did not find manuscript " + m_id)
+          }
         }
       }
     });
   }
 
   // Get a new unique manuscript ID from the service
-  var kmwSubmitAdd = function() {
+  window.kmwSubmitAdd = function() {
 
     // Submit a lookup to get a new unique manuscript ID
     $.ajax({
@@ -192,7 +222,6 @@ $(document).ready(function(){
       crossDomain: true,
       success: function(data)
       {
-
         // remove the form fields and replace with the 'edit' group
         $('#kmw-fields .form-group').remove();
         $["kmw"][0]["v"] = data.m_id //@todo FIX ME
@@ -207,7 +236,7 @@ $(document).ready(function(){
     });
   }
 
-  var kmwSubmitEdit = function(m_id) {
+  window.kmwSubmitEdit = function(m_id) {
     var post_obj = new Object();
     for (var i = 0; i < $.kmw.length; i++) {
       if ($.kmw[i].group) {
@@ -242,7 +271,7 @@ $(document).ready(function(){
   }
 
   // Reset form data and timers
-  var kmwFormReset = function() {
+  window.kmwFormReset = function() {
     // reset form values
     $('#kmw-fields input').not('#kmw-find').each(function(){
       $(this).val('')
@@ -252,7 +281,7 @@ $(document).ready(function(){
     $('#kmw-fields select').find("option[value='0']").attr("selected","selected");
   }
 
-  var kmwFormUpdate = function(data) {
+  window.kmwFormUpdate = function(data) {
     kmwFormReset();
 
     $('#kmw-fields input,#kmw-fields select').each(function(){
@@ -279,13 +308,13 @@ $(document).ready(function(){
 
   }
 
-  var kmwDataReset = function() {
+  window.kmwDataReset = function() {
     for (var i = 0; i < $.kmw.length; i++) {
       $["kmw"][i]["v"] = ''
     };
   }
 
-  var kmwDataUpdate = function() {
+  window.kmwDataUpdate = function() {
     // get input fields
     $('#kmw-fields input,#kmw-fields select').each(function(){
       // get key from id
@@ -312,7 +341,7 @@ $(document).ready(function(){
 
   }
 
-  var kmwClearFeedback = function() {
+  window.kmwClearFeedback = function() {
     // remove feedback formatting
     $('#kmw-fields .has-feedback').removeClass('has-feedback')
     $('#kmw-fields .has-success').removeClass('has-success')
@@ -415,11 +444,10 @@ $(document).ready(function(){
     var m_name = $('#kmw-val-name').val()
     var m_shelfmark = $('#kmw-val-shelfmark').val()
 
-    // remove the form fields and replace with the 'edit' group
-    $('#kmw-fields .form-group').remove();
+    // Submit the lookup, using m_id if we know it. If not, the function will
+    // check the name and shelfmark values.
+    kmwSubmitLookup(m_id, m_name, m_shelfmark);
 
-    kmwEditForm();
-    kmwSubmitLookup(m_id);
   });
 
   $('#kmw').on('click', '#kmw-add', function(event){
@@ -434,6 +462,9 @@ $(document).ready(function(){
 
     // remove the form fields and replace with the 'edit' group
     $('#kmw-fields .form-group').remove();
+    $('#kmw-fields').show();
+    // We don't need the browse table any more
+    $('#kmw-browse').remove();
     kmwLookupForm();
   });
 });
