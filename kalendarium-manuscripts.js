@@ -379,11 +379,11 @@ $(document).ready(function(){
 
     ]},
     {'element':'columns', 'label':'Columns', 'fieldtype':'group', 'group': [
-      {'element':'cal_col_1', 'label':'1', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalend, Nones, Ideas','day':'Roman Day','text':'Text'}},
-      {'element':'cal_col_2', 'label':'2', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalend, Nones, Ideas','day':'Roman Day','text':'Text'}},
-      {'element':'cal_col_3', 'label':'3', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalend, Nones, Ideas','day':'Roman Day','text':'Text'}},
-      {'element':'cal_col_4', 'label':'4', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalend, Nones, Ideas','day':'Roman Day','text':'Text'}},
-      {'element':'cal_col_5', 'label':'5', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalend, Nones, Ideas','day':'Roman Day','text':'Text'}}
+      {'element':'cal_col_1', 'label':'1', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalends, Nones, Ideas','day':'Roman Day','text':'Text'}},
+      {'element':'cal_col_2', 'label':'2', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalends, Nones, Ideas','day':'Roman Day','text':'Text'}},
+      {'element':'cal_col_3', 'label':'3', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalends, Nones, Ideas','day':'Roman Day','text':'Text'}},
+      {'element':'cal_col_4', 'label':'4', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalends, Nones, Ideas','day':'Roman Day','text':'Text'}},
+      {'element':'cal_col_5', 'label':'5', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalends, Nones, Ideas','day':'Roman Day','text':'Text'}}
     ]},
 
     // General manuscript elements
