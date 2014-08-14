@@ -1,6 +1,6 @@
 $(document).ready(function(){
   //@remote
-  var kmw_url_target = 'http://kalendarium-manuscripts.herokuapp.com/'
+  var kmw_url_target = 'http://kalendarium-manuscripts.herokuapp.com'
   // @todo - add check to make sure it's up before we do anything
 
   //@local
@@ -389,11 +389,11 @@ $(document).ready(function(){
 
     ]},
     {'element':'columns', 'label':'Columns', 'fieldtype':'group', 'group': [
-      {'element':'cal_col_1', 'label':'1', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalends, Nones, Ideas','day':'Roman Day','text':'Text'}},
-      {'element':'cal_col_2', 'label':'2', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalends, Nones, Ideas','day':'Roman Day','text':'Text'}},
-      {'element':'cal_col_3', 'label':'3', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalends, Nones, Ideas','day':'Roman Day','text':'Text'}},
-      {'element':'cal_col_4', 'label':'4', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalends, Nones, Ideas','day':'Roman Day','text':'Text'}},
-      {'element':'cal_col_5', 'label':'5', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalends, Nones, Ideas','day':'Roman Day','text':'Text'}}
+      {'element':'cal_col_1', 'label':'1', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalends, Nones, Ides','day':'Roman Day','text':'Text'}},
+      {'element':'cal_col_2', 'label':'2', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalends, Nones, Ides','day':'Roman Day','text':'Text'}},
+      {'element':'cal_col_3', 'label':'3', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalends, Nones, Ides','day':'Roman Day','text':'Text'}},
+      {'element':'cal_col_4', 'label':'4', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalends, Nones, Ides','day':'Roman Day','text':'Text'}},
+      {'element':'cal_col_5', 'label':'5', 'v':'', 'fieldtype':'list', 'options':{'':'','number':'Golden Number','letter':'Dominical Letter','kni':'Kalends, Nones, Ides','day':'Roman Day','text':'Text'}}
     ]},
 
     // The Shared Canvas maifest ID for this calendar
