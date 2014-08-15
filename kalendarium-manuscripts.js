@@ -383,9 +383,9 @@ $(document).ready(function(){
     {'element':'shading', 'label':'Has shading?', 'v':'', 'fieldtype':'list', 'options':{'1':'Yes','0':'No'}},
     {'element':'folio_sides', 'label':'Folio Sides', 'v':'', 'fieldtype':'group', 'group': [
       {'element':'folio_start_num', 'label':'Start', 'v':'', 'fieldtype':'text', 'options':''},
-      {'element':'folio_start_side', 'label':'', 'v':'', 'fieldtype':'list', 'options':{'':'','R':'R','V':'V'}},
+      {'element':'folio_start_side', 'label':'', 'v':'', 'fieldtype':'list', 'options':{'':'','r':'r','v':'v'}},
       {'element':'folio_end_num', 'label':'End', 'v':'', 'fieldtype':'text', 'options':''},
-      {'element':'folio_end_side', 'label':'', 'v':'', 'fieldtype':'list', 'options':{'':'','R':'R','V':'V'}},
+      {'element':'folio_end_side', 'label':'', 'v':'', 'fieldtype':'list', 'options':{'':'','r':'r','v':'v'}},
 
     ]},
     {'element':'columns', 'label':'Columns', 'fieldtype':'group', 'group': [
