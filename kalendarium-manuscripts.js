@@ -373,11 +373,14 @@ $(document).ready(function(){
 
     // Calendar elements
     {'element':'is_integral', 'label':'Is the calendar integral?', 'v':'', 'fieldtype':'list', 'options':{'1':'Yes','0':'No'}},
-    {'element':'grading', 'label':'Grading (Importance)', 'fieldtype':'group', 'group':[
-      {'element':'grade_black', 'label':'Black', 'v':'', 'fieldtype':'list', 'options':{'':'','1':'1','2':'2','3':'3','4':'4'}},
-      {'element':'grade_blue', 'label':'Blue', 'v':'', 'fieldtype':'list', 'options':{'':'','1':'1','2':'2','3':'3','4':'4'}},
-      {'element':'grade_red', 'label':'Red', 'v':'', 'fieldtype':'list', 'options':{'':'','1':'1','2':'2','3':'3','4':'4'}},
-      {'element':'grade_gold', 'label':'Gold', 'v':'', 'fieldtype':'list', 'options':{'':'','1':'1','2':'2','3':'3','4':'4'}}
+    {'element':'grading', 'label':'Grading (Weight)', 'fieldtype':'group', 'group':[
+      {'element':'grade_black', 'label':'Black/Brown', 'v':'', 'fieldtype':'list', 'options':{'':'','1':'1','2':'2','3':'3','4':'4','5':'5','6':'6','7':'7'}},
+      {'element':'grade_blue', 'label':'Blue', 'v':'', 'fieldtype':'list', 'options':{'':'','1':'1','2':'2','3':'3','4':'4','5':'5','6':'6','7':'7'}},
+      {'element':'grade_green', 'label':'Green', 'v':'', 'fieldtype':'list', 'options':{'':'','1':'1','2':'2','3':'3','4':'4','5':'5','6':'6','7':'7'}},
+      {'element':'grade_pink', 'label':'Pink', 'v':'', 'fieldtype':'list', 'options':{'':'','1':'1','2':'2','3':'3','4':'4','5':'5','6':'6','7':'7'}},
+      {'element':'grade_red', 'label':'Red', 'v':'', 'fieldtype':'list', 'options':{'':'','1':'1','2':'2','3':'3','4':'4','5':'5','6':'6','7':'7'}},
+      {'element':'grade_purple', 'label':'Purple', 'v':'', 'fieldtype':'list', 'options':{'':'','1':'1','2':'2','3':'3','4':'4','5':'5','6':'6','7':'7'}},
+      {'element':'grade_gold', 'label':'Gold', 'v':'', 'fieldtype':'list', 'options':{'':'','1':'1','2':'2','3':'3','4':'4','5':'5','6':'6','7':'7'}}
     ]},
 
     {'element':'shading', 'label':'Has shading?', 'v':'', 'fieldtype':'list', 'options':{'1':'Yes','0':'No'}},
